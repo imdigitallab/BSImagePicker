@@ -39,7 +39,7 @@ class AssetsViewController: UIViewController {
     private let collectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private var fetchResult: PHFetchResult<PHAsset> = PHFetchResult<PHAsset>() {
         didSet {
-            messageLabel.isHidden = fetchResult.count > 0
+            messageLabel.isHidden = !settings.message.shouldShowMessages || fetchResult.count > 0
             dataSource.fetchResult = fetchResult
         }
     }

@@ -193,6 +193,9 @@ import Photos
     }
     
     public class Message : NSObject {
+        /// Should show messages
+        public lazy var shouldShowMessages = false
+        
         /// Messages for empty
         public lazy var emptyMessage = "Item are empty"
         public lazy var messageAttributes : [NSAttributedString.Key: Any] = [
