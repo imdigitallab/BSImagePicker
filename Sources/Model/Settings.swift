@@ -191,6 +191,20 @@ import Photos
         /// Allow the user to dismiss the image picker by swiping down
         public lazy var allowSwipe = false
     }
+    
+    public class Message : NSObject {
+        /// Messages for empty
+        public lazy var emptyMessage = "Item are empty"
+        public lazy var messageAttributes : [NSAttributedString.Key: Any] = [
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
+            NSAttributedString.Key.foregroundColor: UIColor.systemPrimaryTextColor,
+            .paragraphStyle: {
+                let paragraphStyle = NSMutableParagraphStyle()
+                paragraphStyle.alignment = .center
+                return paragraphStyle
+            }()
+        ]
+    }
 
     /// Theme settings
     public lazy var theme = Theme()
@@ -209,4 +223,7 @@ import Photos
 
     /// Preview options
     public lazy var preview = Preview()
+    
+    /// Message settings
+    public lazy var message = Message()
 }
