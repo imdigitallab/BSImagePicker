@@ -39,12 +39,15 @@ class AssetsViewController: UIViewController {
     private let collectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private var fetchResult: PHFetchResult<PHAsset> = PHFetchResult<PHAsset>() {
         didSet {
+            messageLabel.isHidden = !settings.message.shouldShowMessages || fetchResult.count > 0
             dataSource.fetchResult = fetchResult
         }
     }
     private let dataSource: AssetsCollectionViewDataSource
 
     private let selectionFeedback = UISelectionFeedbackGenerator()
+    
+    private let messageLabel: UILabel = UILabel(frame: .zero)
 
     init(store: AssetStore) {
         self.store = store
@@ -64,8 +67,10 @@ class AssetsViewController: UIViewController {
         super.viewDidLoad()
 
         PHPhotoLibrary.shared().register(self)
-
-        view = collectionView
+        
+        collectionView.frame = view.bounds
+        collectionView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        view.addSubview(collectionView)
 
         // Set an empty title to get < back button
         title = " "
@@ -82,6 +87,15 @@ class AssetsViewController: UIViewController {
         let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(AssetsViewController.collectionViewLongPressed(_:)))
         longPressRecognizer.minimumPressDuration = 0.5
         collectionView.addGestureRecognizer(longPressRecognizer)
+        
+        messageLabel.frame = view.bounds
+        messageLabel.attributedText = NSAttributedString(
+            string: settings.message.emptyMessage,
+            attributes: self.settings.message.messageAttributes
+        )
+        messageLabel.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.addSubview(messageLabel)
+        //messageLabel.isHidden = true
 
         syncSelections(store.assets)
     }
